@@ -1,0 +1,73 @@
+# Ignore build output directories
+bin/
+obj/
+
+# Ignore user-specific files
+*.user
+*.rsuser
+*.suo
+*.userosscache
+*.userprefs
+
+# Ignore logs
+*.log
+
+# Ignore temporary files
+*.tmp
+*.temp
+
+# Ignore Visual Studio specific files
+.vscode/
+.vs/
+.vscode/*
+.vs/*
+
+# Ignore NuGet packages
+*.nupkg
+*.snupkg
+packages/
+
+# Ignore Rider specific files
+.idea/
+.idea/*
+
+# Ignore other IDE specific files
+*.sln.iml
+
+# Ignore auto-generated files
+*.generated.cs
+*.AssemblyInfo.cs
+
+# Ignore build artifacts
+*.dll
+*.exe
+*.pdb
+*.cache
+*.obj
+*.o
+*.so
+*.dylib
+*.lib
+*.a
+
+# Ignore coverage reports
+coverage/
+*.coverage
+*.coveragexml
+*.cov
+*.gcov
+*.gcda
+*.gcno
+*.lcov
+*.lst
+
+# Ignore other files
+*.DS_Store
+*.directory
+*.class
+*.pyc
+*.pyo
+*.pyd
+*.pid
+*.seed
+*.pid.lock
