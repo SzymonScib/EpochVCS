@@ -11,7 +11,7 @@ namespace src
                 return;
             }
 
-            ICommand command = args[0] switch{
+            ICommand? command = args[0] switch{
                 "init" => new InitCommand(),
                 _ => null
             };
