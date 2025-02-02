@@ -4,24 +4,16 @@ namespace src
 {
     class Program
     {
-        static void Main(string[] args)
-        {
-            if(args.Length == 0){
+        static void Main(string[] args){
+            if (args.Length == 0)
+            {
                 System.Console.WriteLine("No command provided.");
                 return;
             }
 
-            ICommand? command = args[0] switch{
-                "init" => new InitCommand(),
-                _ => null
-            };
+            var invoker = Utils.InitializeCommands();
 
-            if(command == null){
-                System.Console.WriteLine("Invalid command.");
-                return;
-            }
-
-            command.Execute();
+            invoker.ExecuteCommand(args[0]);
         }
     }
 }
