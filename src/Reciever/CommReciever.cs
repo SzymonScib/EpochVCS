@@ -4,8 +4,10 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.IO;
 using System.Runtime.InteropServices;
+using System.Security.Cryptography;
+using System.Text;
 
-namespace src
+namespace src.Reciever
 {
     public class CommReciever
     {
@@ -33,8 +35,25 @@ namespace src
             Console.WriteLine("Initialized empty VCS repository in " + epochDir);
         }
 
-        public void Stage(){
-            
+        public void Stage(string[] fileNames){
+            string epochDir = Path.Combine(Directory.GetCurrentDirectory(), ".epoch");
+
+            List<string> filesToStage;
+
+            if (fileNames.Length == 1 && fileNames[0] == "."){
+                // Stage all files
+                filesToStage = Directory.GetFiles(Directory.GetCurrentDirectory(), "*", SearchOption.AllDirectories)
+                                        .Where(f => !f.Contains(".epoch"))
+                                        .ToList();
+            }
+            else{
+                // Stage specified files
+                filesToStage = fileNames.Select(f => Path.Combine(Directory.GetCurrentDirectory(), f))
+                                        .Where(f => File.Exists(f) && !f.Contains(".epoch"))
+                                        .ToList();
+            }
+
+            RecieverUtils.StageFiles(filesToStage);
         }
     }
 }

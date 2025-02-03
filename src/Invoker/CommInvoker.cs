@@ -4,7 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using src.Commands;
 
-namespace src
+namespace src.Invoker
 {
     public class CommInvoker
     {

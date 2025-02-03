@@ -11,7 +11,7 @@ namespace src
                 return;
             }
 
-            var invoker = Utils.InitializeCommands();
+            var invoker = Utils.InitializeCommands(args);
 
             invoker.ExecuteCommand(args[0]);
         }
