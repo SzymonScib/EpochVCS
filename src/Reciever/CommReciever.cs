@@ -55,5 +55,24 @@ namespace src.Reciever
 
             RecieverUtils.StageFiles(filesToStage);
         }
+
+        public void Commit(string message){
+            string epochDir = Path.Combine(Directory.GetCurrentDirectory(), ".epoch");
+            string indexPath = Path.Combine(epochDir, "index");
+            string objectsPath = Path.Combine(epochDir, "objects");
+            string headPath = Path.Combine(epochDir, "HEAD");
+            //TODO: Implement this method
+            // 1. Read the staged changes from the index
+            var indexEntries = RecieverUtils.ReadIndex(indexPath);
+            // 2. Create a tree object
+            string treeHashHex = RecieverUtils.CreateTreeObject(indexEntries, objectsPath);
+            // 3. Create a commit object
+            string parentCommit = File.Exists(headPath) ? File.ReadAllText(headPath).Trim() : "";
+            string commitHashHex = RecieverUtils.CreateCommitObject(treeHashHex, parentCommit, message, objectsPath);
+            // 4. Store the commit object and update HEAD
+            File.WriteAllText(headPath, commitHashHex);
+            Console.WriteLine($"[commit {commitHashHex}] {message}");
+
+        }
     }
 }
