@@ -20,6 +20,7 @@ namespace src
                     "init" => new InitCommand(commReciever),
                     "stage" => new StageCommand(commReciever, args.Skip(1).ToArray()),
                     "commit" => new CommmitCommand(commReciever, string.Join(" ", args.Skip(1))),
+                    "list" => new ListCommand(commReciever),
                     _ => throw new ArgumentException($"Unknown command: {command}")
                 });
             }

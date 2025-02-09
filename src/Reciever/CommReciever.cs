@@ -6,33 +6,14 @@ using System.IO;
 using System.Runtime.InteropServices;
 using System.Security.Cryptography;
 using System.Text;
+using src.Reciever.Utils;
 
 namespace src.Reciever
 {
     public class CommReciever
     {
         public void Init(){
-            string epochDir = Path.Combine(Directory.GetCurrentDirectory(), ".epoch");
-
-            if (Directory.Exists(epochDir)){
-                Console.WriteLine("Epoch is already initialized.");
-                return;
-            }
-
-            Directory.CreateDirectory(epochDir);
-            Directory.CreateDirectory(Path.Combine(epochDir, "objects"));
-            Directory.CreateDirectory(Path.Combine(epochDir, "refs"));
-            Directory.CreateDirectory(Path.Combine(epochDir, "commits"));
-
-            File.WriteAllText(Path.Combine(epochDir, "HEAD"), "ref: refs/heads/main\n");
-
-            File.WriteAllText(Path.Combine(epochDir, "config"), "[core]\nrepositoryformatversion = 0\n");
-
-            if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows)){
-                File.SetAttributes(epochDir, File.GetAttributes(epochDir) | FileAttributes.Hidden);
-            }
-
-            Console.WriteLine("Initialized empty VCS repository in " + epochDir);
+            InitUtils.InitialiseRepository();
         }
 
         public void Stage(string[] fileNames){
@@ -53,7 +34,7 @@ namespace src.Reciever
                                         .ToList();
             }
 
-            RecieverUtils.StageFiles(filesToStage);
+            StageUtils.StageFiles(filesToStage);
         }
 
         public void Commit(string message){
@@ -63,16 +44,20 @@ namespace src.Reciever
             string headPath = Path.Combine(epochDir, "HEAD");
             //TODO: Implement this method
             // 1. Read the staged changes from the index
-            var indexEntries = RecieverUtils.ReadIndex(indexPath);
+            var indexEntries = CommitUtils.ReadIndex(indexPath);
             // 2. Create a tree object
-            string treeHashHex = RecieverUtils.CreateTreeObject(indexEntries, objectsPath);
+            string treeHashHex = CommitUtils.CreateTreeObject(indexEntries, objectsPath);
             // 3. Create a commit object
             string parentCommit = File.Exists(headPath) ? File.ReadAllText(headPath).Trim() : "";
-            string commitHashHex = RecieverUtils.CreateCommitObject(treeHashHex, parentCommit, message, objectsPath);
+            string commitHashHex = CommitUtils.CreateCommitObject(treeHashHex, parentCommit, message, objectsPath);
             // 4. Store the commit object and update HEAD
             File.WriteAllText(headPath, commitHashHex);
             Console.WriteLine($"[commit {commitHashHex}] {message}");
 
+        }
+
+        public void List(){
+            ListUtils.ListStagedChanges();
         }
     }
 }
